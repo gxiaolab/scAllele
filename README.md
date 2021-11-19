@@ -1,8 +1,8 @@
 # **scAllele**
-
+_______________________________________
 <a href="https://test.pypi.org/project/scAllele/"><img alt="PyPI"></a>
 
-## About
+## **About**
 
 
 scAllele is a versatile tool to detect and analyze nucleotide variants in scRNA-seq. 
@@ -11,30 +11,36 @@ The read level variant-call allows for the analysis of the role variants in the 
 Using mutual information, scAllele identifis allelic linkage between nucleotide variants and splicing
 isoforms.
 
-## Table of contents
+## **Table of contents**
+- [Outline](#Outline)
+- [Download](#Download)
+- [Usage](#Usage)
+- [Output](#Output)
 
-[Download](#Download)
+_______________________________________
 
-[Usage](#Usage)
+## **Outline**
 
-[Output](#Output)
+| ![alt text](img/screenshot_Fig1.png) |
+|:--:|
+| *a. Illustration of the main algorithm of scAllele for variant calling. The reads and the reference genomic sequence overlapping a read cluster (RC) are decomposed into k-mers and are reasembled into a de Bruijn graph. b. Variants (green box in a) identified from the graph are then scored using a generalized linear model (GLM). The GLM was trained with different features (green box) to assign a confidence score to the variants. c. To identify allele-specific splicing (i.e., variant linkage), scAllele performs a mutual information calculation between nucleotide variants (SNVs, microindels) and intronic parts (where the ‘alleles’ are the different overlapping introns), to calculate allelic linkage of splicing isoforms.* |  
 
+_______________________________________
 
-## Download
+## **Download**
 
 scAllele is available through PyPi. To download simply type:
 
 ```
 $ pip install -i https://test.pypi.org/simple/ scAllele
 ```
-The download was tested with PiPy>=20.0.1
+The download was tested with PyPi version >= 20.0.1
 
 If succesful, the program is ready to use. The intallation incorporates console scripts entrypoints to directly call scAllele:
 ```
 $ scAllele
 ```
 ```
-[Wed, 17 Nov 2021, 16:59:19] 0.157   COMMAND = '/usr/bin/scAllele'
 A variant caller and variant analysis for scRNA-seq data
 Usage:
      scAllele -b <file.bam> -g <genome.fa> -o <output prefix>
@@ -102,10 +108,11 @@ Options:
                         0.01
     --Ploidy=PLOIDY     Maximum ploidy to be considered. Default: 2.
  ```
- 
-## Usage 
+_______________________________________
 
-### Basic usage
+## **Usage**
+
+### *Basic usage*
 
 The minimum requirements to run scAllele are:
 1. A bam file (sorted and indexed) `samtools sort file.bam file.sorted ; samtools index file.sorted.bam` 
@@ -115,8 +122,15 @@ The minimum requirements to run scAllele are:
 ```
 $ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o path/to/output_prefix
 ```
+### *Preprocessing* 
 
-### Stranded data
+scAllele only requires a bam file and a reference genome fasta file, however, in order to get optimal results it is recommended to pre-process the data:
+
+| ![alt text](img/screenshot_SuppFig1.png) |
+|:--:| 
+| *Recommended pipeline* |
+
+### *Stranded data*
 If your scRNA-seq is strand-specific, then you can specify the strandedness of your data (default: non-strand specific). /
 Strand-specific data helps resolve ambiguous alignments on overlapping genes. It also helps detect more accurate ASAS events. /
 Most strand-specific libraries in RNA-Seq are `fr-firststrand` (second read pair is sense to the RNA). You can specify this in your command:
@@ -125,7 +139,7 @@ $ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o path/to/out
 ```
 Alternatively, you can use the option `--strandedness=fr-secondstrand` if the first read pair is sense to the RNA.  
 
-### Local search
+### *Local variant call*
 By default, scAllele searches for variants in all the regions of the transcriptome covered by reads. If you wish to search for variants in a custom genomic interval, you can do so with the `-c` option. 
 ```
 ## Only search chromosome 1
@@ -150,11 +164,27 @@ chr21:4589110-4595910
 scAllele will search for read clusters within these regions only. Bare in mind that it's possible to find no read clusters in the spcified region, and that, if a specified region does not contain the entirety of a gene, it may miss some ASAS events. 
 
 
-### Filtering variants 
+### *Filtering variants* 
 Although it is recommended to filter variants downstream of your analysis (via bcftools or others), it's possible to filter variants from the start. If you wish, for example, to only report variants with 3 reads supporting the alternative allele (AC) and 5 reads overall, then you can run the following command:
 ```
 $ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o path/to/output_prefix --AC=3 --DP=5
 ```
 The default is `AC=2 and DP=2`. 
 
-## Output
+
+_______________________________________
+
+
+## **Output**
+
+scAllele generates 3 files as output:
+```
+path/to/output_prefix.vcf
+path/to/output_prefix.mi_summary.tab
+path/to/output_prefix.read_cluster_info.tab
+```
+The first file `.vcf` is a standard vcf file reporting all the nucleotide variants found. The description of the tags and values are specified in the header.\
+The second file `.mi_summary.tab` reports all the linkage events between variants or between variant and intronic part (ASAS). The mututal information and number of common reads between pairs of variants are reported. **NOTE**: All the testable linkages are presented. It is recommended to filter linkage events based on the mutual information and number of common reads as explained in the main publication.\
+The second file `.read_cluster_info.tab` reports all the read clusters identified in the file. \
+
+## 
