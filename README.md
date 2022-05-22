@@ -16,12 +16,12 @@ isoforms.
 - [Outline](#Outline)
 - [Download](#Download)
 - [Usage](#Usage)
-	- [Basic usage](#Basic usage)
+	- [Basic usage](#Basic-usage)
 	- [Preprocessing](#Preprocessing)
-	- [Stranded data](#Stranded data)
-	- [Local variant call](#Local variant call)
-	- [Filtering variants](#Filtering variants)
-	- [Training a new classifier](#Training a new classifier)
+	- [Stranded data](#Stranded-data)
+	- [Local variant call](#Local-variant-call)
+	- [Filtering variants](#Filtering-variants)
+	- [Training a new classifier](#Training-a-new-classifier)
 - [Output](#Output)
 
 _______________________________________
