@@ -1,6 +1,7 @@
 # **scAllele**
 _______________________________________
-<a href="https://test.pypi.org/project/scAllele/"><img alt="PyPI"></a>
+[![](https://img.shields.io/badge/scAllele-v0.0.9.1-blue)](https://test.pypi.org/project/scAllele/)
+
 
 ## **About**
 
@@ -15,6 +16,12 @@ isoforms.
 - [Outline](#Outline)
 - [Download](#Download)
 - [Usage](#Usage)
+	- [Basic usage](#Basic usage)
+	- [Preprocessing](#Preprocessing)
+	- [Stranded data](#Stranded data)
+	- [Local variant call](#Local variant call)
+	- [Filtering variants](#Filtering variants)
+	- [Training a new classifier](#Training a new classifier)
 - [Output](#Output)
 
 _______________________________________
@@ -29,7 +36,7 @@ _______________________________________
 
 ## **Download**
 
-scAllele is available through PyPi. To download simply type:
+scAllele is available through test.PyPi. To download simply type:
 
 ```
 $ pip install -i https://test.pypi.org/simple/ scAllele
@@ -39,33 +46,21 @@ The download was tested with PyPi version >= 20.0.1
 If succesful, the program is ready to use. The intallation incorporates console scripts entrypoints to directly call scAllele:
 ```
 $ scAllele
-```
-```
-A variant caller and variant analysis for scRNA-seq data
-Usage:
-     scAllele -b <file.bam> -g <genome.fa> -o <output prefix>
-```
 
-You can also view all the options by typing:
-
-```
-$ scAllele --help
-```
-
-```
 Usage: 
 	scAllele -b <file.bam> -g <genome.fa> -o <output prefix>
 
-A variant caller and variant analysis for scRNA-seq data
+A variant caller and variant analysis tool for scRNA-seq data.
 
 Options:
   -h, --help            show this help message and exit
   -b INPUT_BAM, --input-bam=INPUT_BAM
-                        [Required] Input bam file, sorted and indexed
-  -o OUTPUT_VCF, --output-vcf=OUTPUT_VCF
+                        [Required] Input bam file, (or comma-seprated list of
+                        bam files) sorted and indexed
+  -o OUTPUT_PREFIX, --output-vcf=OUTPUT_PREFIX
                         [Required] Prefix of the output files
   -g GENOME, --genome-file=GENOME
-                        [Required] Reference Genome (Fasta format)
+                        [Required] Reference genome file (fasta format)
 
   Filtering Options:
     --AB=MINRATIOVAR    Minimum allelic ratio for the variant allele. Default:
@@ -73,33 +68,42 @@ Options:
     --AC=MINCOUNTVAR    Minimum read depth supporting the variant allele.
                         Default: 2
     --DP=MINCOVERAGE    Minimum read depth at the position of the variant.
-                        Default: 10
+                        Default: 5
     --min-base_position=MINREADPOS
                         Minimum mean distance for the variant from the read
                         ends. Default = 7
-    --min-base_quality=MINQUAL
+    --min-base_quality=MINBASEQUAL
                         Minimum mean base quality score to consider SNPs.
                         Default = 20
 
   Run Mode Options:
     --run_mode=RUN_MODE
-                        Select <Variant_Caller> or <Training> mode. Default:
-                        Variant_Caller
+                        Select <Variant_Caller> <Full> or <Training> mode.
+                        Default: Full
     --glm_clf_name=GLM_CLASSIFIER_NAME
                         Prefix of the GLM pickle objects with the GLM models
+
+  Linkage Options:
+    --link_min_count=LINK_MIN_COUNT
+                        Minimum number of common reads for linkage analysis.
+                        Default = 10
+    --link_min_mi=LINK_MIN_MI
+                        Minimum mutual information for linkage analysis.
+                        Default = 0.52
 
   Advanced Options:
     -c SEARCH_REGION, --region=SEARCH_REGION
                         Limit search to this region (chrom:start-end or
                         chrom). Default: All
     -n NODES, --nodes=NODES
-                        Number of threads for parallel execution. Default = 16
+                        Number of threads for parallel execution. Default = 64
     --min-map_quality=MINMAPQ
                         Minimum mapping quality to keep a read. Default = 40
     --max_soft_clip=MAXSOFTCLIP
                         Maximum length of soft-clipping allow at each end of
                         the read. Default = 5
-    --kmer-size=KMER    k-mer size for de-Bruijn graph assembly. Default: 15
+    --kmer-size=KMER    k-mer size for the de-Bruijn graph assembly. Default:
+                        15
     --strandedness=STRANDEDNESS
                         Select from ['fr-firststrand', 'fr-secondstrand', 'fr-
                         unstrand']. Default: 'fr-unstrand'
@@ -126,7 +130,7 @@ $ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o path/to/out
 
 scAllele only requires a bam file and a reference genome fasta file, however, in order to get optimal results it is recommended to pre-process the data:
 
-| ![alt text](img/screenshot_SuppFig1.png) |
+| ![alt text](img/Fig_S1.png) |
 |:--:| 
 | *Recommended pipeline* |
 
@@ -147,20 +151,8 @@ $ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o path/to/out
 
 ## Only search within these coordinates
 $ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o path/to/output_prefix -c chr1:154582111-154628004
-
-## Only search the chromosomes, or coordinates specified in this file
-$ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o path/to/output_prefix -c my_regions_of_interest.txt
 ```
 
-The latter command reads a file with one region per line e.g.
-```
-$ cat my_regions_of_interest.txt
-
-chr1:154582111-154628004
-chr2
-chr3
-chr21:4589110-4595910
-```
 scAllele will search for read clusters within these regions only. Bare in mind that it's possible to find no read clusters in the spcified region, and that, if a specified region does not contain the entirety of a gene, it may miss some ASAS events. 
 
 
@@ -171,20 +163,46 @@ $ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o path/to/out
 ```
 The default is `AC=2 and DP=2`. 
 
+### *Training a new classifier* 
+scAllele offers the option to retrain the variant classifier. Sequencing data from different platforms or resulting from different library preparation protocols may have different error profiles. If you wish to retrain scAllele's classifier run it in training mode: 
 
-_______________________________________
+```
+$ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o path/to/output_prefix --run_mode='Training' 
+```
+
+This will return a feature file (`.feature_matrix.tab`) containing the variant calls and all the features used for the training of the classifier.  
+Then, run scAllele's training function. The supervised classifier will require a set of ground-truth variants to fit the model.  
+
+```
+$ scAllele_train -i path/to/output_prefix.feature_matrix.tab -v truth.vcf -g testdata/hg38.chr21.fa
+```
+
+This will return 3 pickle objects:
+- path/to/output_prefix.feature_matrix.tab.DELETION.glm.pickle
+- path/to/output_prefix.feature_matrix.tab.INSERTION.glm.pickle
+- path/to/output_prefix.feature_matrix.tab.SNP.glm.pickle
+
+Finally, to use these new classifiers to call variants run:
+
+```
+$ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o new_path/to/output_prefix --glm_clf_name path/to/output_prefix.feature_matrix.tab  
+```
+
+_____________________________________
 
 
 ## **Output**
 
-scAllele generates 3 files as output:
+scAllele generates 4 files as output:
 ```
 path/to/output_prefix.vcf
 path/to/output_prefix.mi_summary.tab
 path/to/output_prefix.read_cluster_info.tab
+path/to/output_prefix.intronic_parts.bed
 ```
 The first file `.vcf` is a standard vcf file reporting all the nucleotide variants found. The description of the tags and values are specified in the header.\
 The second file `.mi_summary.tab` reports all the linkage events between variants or between variant and intronic part (ASAS). The mututal information and number of common reads between pairs of variants are reported. **NOTE**: All the testable linkages are presented. It is recommended to filter linkage events based on the mutual information and number of common reads as explained in the main publication.\
-The second file `.read_cluster_info.tab` reports all the read clusters identified in the file. \
+The third file `.read_cluster_info.tab` reports all the read clusters identified in the file. \
+The fourth file `.intronic_parts.bed` reports the intronic parts identified together with the introns that form them. 
 
 ## 
