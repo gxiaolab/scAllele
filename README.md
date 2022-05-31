@@ -124,7 +124,7 @@ The minimum requirements to run scAllele are:
 3. A prefix for the output files.
 
 ```
-$ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o path/to/output_prefix
+$ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr1.fa -o path/to/output_prefix
 ```
 ### *Preprocessing* 
 
@@ -139,7 +139,11 @@ If your scRNA-seq is strand-specific, then you can specify the strandedness of y
 Strand-specific data helps resolve ambiguous alignments on overlapping genes. It also helps detect more accurate ASAS events. /
 Most strand-specific libraries in RNA-Seq are `fr-firststrand` (second read pair is sense to the RNA). You can specify this in your command:
 ```
-$ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o path/to/output_prefix --strandedness='fr-firststrand'
+$ scAllele \
+    -b testdata/gm12878.chr1.bam \
+    -g testdata/hg38.chr1.fa \
+    -o path/to/output_prefix \
+    --strandedness='fr-firststrand'
 ```
 Alternatively, you can use the option `--strandedness=fr-secondstrand` if the first read pair is sense to the RNA.  
 
@@ -147,10 +151,18 @@ Alternatively, you can use the option `--strandedness=fr-secondstrand` if the fi
 By default, scAllele searches for variants in all the regions of the transcriptome covered by reads. If you wish to search for variants in a custom genomic interval, you can do so with the `-c` option. 
 ```
 ## Only search chromosome 1
-$ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o path/to/output_prefix -c chr1
+$ scAllele \
+    -b testdata/gm12878.chr1.bam \
+    -g testdata/hg38.chr1.fa \
+    -o path/to/output_prefix \
+    -c chr1
 
 ## Only search within these coordinates
-$ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o path/to/output_prefix -c chr1:154582111-154628004
+$ scAllele \
+    -b testdata/gm12878.chr1.bam \
+    -g testdata/hg38.chr1.fa \
+    -o path/to/output_prefix \
+    -c chr1:154582111-154628004
 ```
 
 scAllele will search for read clusters within these regions only. Bare in mind that it's possible to find no read clusters in the spcified region, and that, if a specified region does not contain the entirety of a gene, it may miss some ASAS events. 
@@ -159,7 +171,12 @@ scAllele will search for read clusters within these regions only. Bare in mind t
 ### *Filtering variants* 
 Although it is recommended to filter variants downstream of your analysis (via bcftools or others), it's possible to filter variants from the start. If you wish, for example, to only report variants with 3 reads supporting the alternative allele (AC) and 5 reads overall, then you can run the following command:
 ```
-$ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o path/to/output_prefix --AC=3 --DP=5
+$ scAllele \
+    -b testdata/gm12878.chr21.bam \
+    -g testdata/hg38.chr1.fa \
+    -o path/to/output_prefix \
+    --AC=3 \
+    --DP=5
 ```
 The default is `AC=2 and DP=2`. 
 
@@ -167,14 +184,21 @@ The default is `AC=2 and DP=2`.
 scAllele offers the option to retrain the variant classifier. Sequencing data from different platforms or resulting from different library preparation protocols may have different error profiles. If you wish to retrain scAllele's classifier run it in training mode: 
 
 ```
-$ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o path/to/output_prefix --run_mode='Training' 
+$ scAllele \
+    -b testdata/gm12878.chr1.bam \
+    -g testdata/hg38.chr1.fa \
+    -o path/to/output_prefix \
+    --run_mode='Training' 
 ```
 
 This will return a feature file (`.feature_matrix.tab`) containing the variant calls and all the features used for the training of the classifier.  
 Then, run scAllele's training function. The supervised classifier will require a set of ground-truth variants to fit the model.  
 
 ```
-$ scAllele_train -i path/to/output_prefix.feature_matrix.tab -v truth.vcf -g testdata/hg38.chr21.fa
+$ scAllele_train \
+    -i path/to/output_prefix.feature_matrix.tab \
+    -v truth.vcf \
+    -g testdata/hg38.chr1.fa
 ```
 
 This will return 3 pickle objects:
@@ -185,7 +209,11 @@ This will return 3 pickle objects:
 Finally, to use these new classifiers to call variants run:
 
 ```
-$ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr21.fa -o new_path/to/output_prefix --glm_clf_name path/to/output_prefix.feature_matrix.tab  
+$ scAllele \
+    -b testdata/gm12878.chr1.bam \
+    -g testdata/hg38.chr1.fa \
+    -o new_path/to/output_prefix \
+    --glm_clf_name path/to/output_prefix.feature_matrix.tab  
 ```
 
 _____________________________________
