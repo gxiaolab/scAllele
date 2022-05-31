@@ -135,8 +135,8 @@ scAllele only requires a bam file and a reference genome fasta file, however, in
 | *Recommended pipeline* |
 
 ### *Stranded data*
-If your scRNA-seq is strand-specific, then you can specify the strandedness of your data (default: non-strand specific). /
-Strand-specific data helps resolve ambiguous alignments on overlapping genes. It also helps detect more accurate ASAS events. /
+If your scRNA-seq is strand-specific, then you can specify the strandedness of your data (default: non-strand specific). \
+Strand-specific data helps resolve ambiguous alignments on overlapping genes. It also helps detect more accurate ASAS events. \
 Most strand-specific libraries in RNA-Seq are `fr-firststrand` (second read pair is sense to the RNA). You can specify this in your command:
 ```
 $ scAllele \
@@ -187,7 +187,7 @@ scAllele offers the option to retrain the variant classifier. Sequencing data fr
 $ scAllele \
     -b testdata/gm12878.chr1.bam \
     -g testdata/hg38.chr1.fa \
-    -o path/to/output_prefix \
+    -o path/to/new_clf \
     --run_mode='Training' 
 ```
 
@@ -196,15 +196,15 @@ Then, run scAllele's training function. The supervised classifier will require a
 
 ```
 $ scAllele_train \
-    -i path/to/output_prefix.feature_matrix.tab \
+    -i path/to/new_clf.feature_matrix.tab \
     -v truth.vcf \
     -g testdata/hg38.chr1.fa
 ```
 
 This will return 3 pickle objects:
-- path/to/output_prefix.feature_matrix.tab.DELETION.glm.pickle
-- path/to/output_prefix.feature_matrix.tab.INSERTION.glm.pickle
-- path/to/output_prefix.feature_matrix.tab.SNP.glm.pickle
+- path/to/new_clf.feature_matrix.tab.DELETION.glm.pickle
+- path/to/new_clf.feature_matrix.tab.INSERTION.glm.pickle
+- path/to/new_clf.feature_matrix.tab.SNP.glm.pickle
 
 Finally, to use these new classifiers to call variants run:
 
@@ -213,7 +213,7 @@ $ scAllele \
     -b testdata/gm12878.chr1.bam \
     -g testdata/hg38.chr1.fa \
     -o new_path/to/output_prefix \
-    --glm_clf_name path/to/output_prefix.feature_matrix.tab  
+    --glm_clf_name path/to/new_clf.feature_matrix.tab  
 ```
 
 _____________________________________
