@@ -6,7 +6,7 @@ _______________________________________
 ## **About**
 
 
-scAllele is a versatile tool to detect and analyze nucleotide variants in scRNA-seq. 
+scAllele is a versatile tool to detect and analyze nucleotide variants in scRNA-seq [(Preprint)](https://www.biorxiv.org/content/10.1101/2022.03.29.486330v1). \
 scAllele makes use local reassembly via de-Bruijn graph to identify sequence differences and infers nucleotide variants at the read level. \
 The read level variant-call allows for the analysis of the role variants in the context of splicing. 
 Using mutual information, scAllele identifis allelic linkage between nucleotide variants and splicing
