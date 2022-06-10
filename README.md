@@ -23,7 +23,8 @@ isoforms.
 	- [Filtering variants](#Filtering-variants)
 	- [Training a new classifier](#Training-a-new-classifier)
 - [Output](#Output)
-
+- [Debug](#Debug)
+ 
 _______________________________________
 
 ## **Outline**
@@ -41,6 +42,7 @@ scAllele is available through test.PyPi. To download simply type:
 ```
 $ pip install -i https://test.pypi.org/simple/ scAllele
 ```
+
 The download was tested with PyPi version >= 20.0.1
 
 If succesful, the program is ready to use. The intallation incorporates console scripts entrypoints to directly call scAllele:
@@ -233,4 +235,23 @@ The second file `.mi_summary.tab` reports all the linkage events between variant
 The third file `.read_cluster_info.tab` reports all the read clusters identified in the file. \
 The fourth file `.intronic_parts.bed` reports the intronic parts identified together with the introns that form them. 
 
-## 
+## **Debug**
+
+If the installed version of scAllele is not the latest one, please try:
+
+```
+pip install -i https://test.pypi.org/simple/ scAllele==0.0.9.1
+```
+
+If one or more dependencies fail to install, make sure you have the latest version of pip:
+
+```
+pip install --upgrade pip
+```
+
+If the error persists, download the `requires.txt` file from this repository and install the dependencies prior to scAllele installation:
+
+```
+pip install -r requires.txt
+pip install -i https://test.pypi.org/simple/ scAllele==0.0.9.1
+``` 
