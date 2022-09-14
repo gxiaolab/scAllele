@@ -7,10 +7,10 @@ _______________________________________
 ## **About**
 
 
-scAllele is a versatile tool to detect and analyze nucleotide variants in scRNA-seq [(Preprint)](https://www.biorxiv.org/content/10.1101/2022.03.29.486330v1). \
+scAllele is a versatile tool to detect and analyze nucleotide variants in scRNA-seq [(Article)](https://www.science.org/doi/10.1126/sciadv.abn6398). \
 scAllele makes use local reassembly via de-Bruijn graph to identify sequence differences and infers nucleotide variants at the read level. \
 The read level variant-call allows for the analysis of the role variants in the context of splicing. 
-Using mutual information, scAllele identifis allelic linkage between nucleotide variants and splicing
+Using mutual information, scAllele identifies allelic linkage between nucleotide variants and splicing
 isoforms.
 
 ## **Table of contents**
@@ -46,7 +46,7 @@ $ pip install -i https://test.pypi.org/simple/ scAllele
 
 The download was tested with PyPi version >= 20.0.1
 
-If succesful, the program is ready to use. The intallation incorporates console scripts entrypoints to directly call scAllele:
+If succesful, the program is ready to use. The installation incorporates console script entrypoints to directly call scAllele:
 ```
 $ scAllele
 
@@ -127,8 +127,19 @@ The minimum requirements to run scAllele are:
 3. A prefix for the output files.
 
 ```
-$ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr1.fa -o path/to/output_prefix
+$ scAllele -b file.sorted.bam -g genome.fa -o path/to/output_prefix
 ```
+
+Using the provided test data: 
+
+```
+$ scAllele 
+    -b testdata/gm12878.chr21.bam 
+    -g testdata/hg38.chr21.fa 
+    -o path/to/output_prefix 
+```
+
+
 ### *Preprocessing* 
 
 scAllele only requires a bam file and a reference genome fasta file, however, in order to get optimal results it is recommended to pre-process the data:
@@ -142,10 +153,10 @@ If your scRNA-seq is strand-specific, then you can specify the strandedness of y
 Strand-specific data helps resolve ambiguous alignments on overlapping genes. It also helps detect more accurate ASAS events. \
 Most strand-specific libraries in RNA-Seq are `fr-firststrand` (second read pair is sense to the RNA). You can specify this in your command:
 ```
-$ scAllele \
-    -b testdata/gm12878.chr1.bam \
-    -g testdata/hg38.chr1.fa \
-    -o path/to/output_prefix \
+$ scAllele 
+    -b testdata/gm12878.chr21.bam 
+    -g testdata/hg38.chr21.fa 
+    -o path/to/output_prefix 
     --strandedness='fr-firststrand'
 ```
 Alternatively, you can use the option `--strandedness=fr-secondstrand` if the first read pair is sense to the RNA.  
@@ -153,44 +164,48 @@ Alternatively, you can use the option `--strandedness=fr-secondstrand` if the fi
 ### *Local variant call*
 By default, scAllele searches for variants in all the regions of the transcriptome covered by reads. If you wish to search for variants in a custom genomic interval, you can do so with the `-c` option. 
 ```
-## Only search chromosome 1
-$ scAllele \
-    -b testdata/gm12878.chr1.bam \
-    -g testdata/hg38.chr1.fa \
-    -o path/to/output_prefix \
-    -c chr1
+## Only search chromosome 21
+$ scAllele 
+    -b testdata/gm12878.chr21.bam 
+    -g testdata/hg38.chr21.fa 
+    -o path/to/output_prefix 
+    -c chr21
 
 ## Only search within these coordinates
-$ scAllele \
-    -b testdata/gm12878.chr1.bam \
-    -g testdata/hg38.chr1.fa \
-    -o path/to/output_prefix \
-    -c chr1:154582111-154628004
+$ scAllele 
+    -b testdata/gm12878.chr21.bam 
+    -g testdata/hg38.chr21.fa 
+    -o path/to/output_prefix 
+    -c chr21:34582111-34628004
 ```
 
 scAllele will search for read clusters within these regions only. Bare in mind that it's possible to find no read clusters in the spcified region, and that, if a specified region does not contain the entirety of a gene, it may miss some ASAS events. 
 
 
 ### *Filtering variants* 
+
 Although it is recommended to filter variants downstream of your analysis (via bcftools or others), it's possible to filter variants from the start. If you wish, for example, to only report variants with 3 reads supporting the alternative allele (AC) and 5 reads overall, then you can run the following command:
+
 ```
-$ scAllele \
-    -b testdata/gm12878.chr21.bam \
-    -g testdata/hg38.chr1.fa \
-    -o path/to/output_prefix \
-    --AC=3 \
+$ scAllele 
+    -b testdata/gm12878.chr21.bam 
+    -g testdata/hg38.chr21.fa 
+    -o path/to/output_prefix 
+    --AC=3 
     --DP=5
 ```
+
 The default is `AC=2 and DP=2`. 
 
 ### *Training a new classifier* 
+
 scAllele offers the option to retrain the variant classifier. Sequencing data from different platforms or resulting from different library preparation protocols may have different error profiles. If you wish to retrain scAllele's classifier run it in training mode: 
 
 ```
-$ scAllele \
-    -b testdata/gm12878.chr1.bam \
-    -g testdata/hg38.chr1.fa \
-    -o path/to/new_clf \
+$ scAllele 
+    -b testdata/gm12878.chr21.bam 
+    -g testdata/hg38.chr21.fa 
+    -o path/to/new_clf 
     --run_mode='Training' 
 ```
 
@@ -198,24 +213,25 @@ This will return a feature file (`.feature_matrix.tab`) containing the variant c
 Then, run scAllele's training function. The supervised classifier will require a set of ground-truth variants to fit the model.  
 
 ```
-$ scAllele_train \
-    -i path/to/new_clf.feature_matrix.tab \
-    -v truth.vcf \
-    -g testdata/hg38.chr1.fa
+$ scAllele_train 
+    -i path/to/new_clf.feature_matrix.tab 
+    -v truth.vcf 
+    -g testdata/hg38.chr21.fa
 ```
 
 This will return 3 pickle objects:
-- path/to/new_clf.feature_matrix.tab.DELETION.glm.pickle
-- path/to/new_clf.feature_matrix.tab.INSERTION.glm.pickle
-- path/to/new_clf.feature_matrix.tab.SNP.glm.pickle
+
+* path/to/new_clf.feature_matrix.tab.DELETION.glm.pickle
+* path/to/new_clf.feature_matrix.tab.INSERTION.glm.pickle
+* path/to/new_clf.feature_matrix.tab.SNP.glm.pickle
 
 Finally, to use these new classifiers to call variants run:
 
 ```
-$ scAllele \
-    -b testdata/gm12878.chr1.bam \
-    -g testdata/hg38.chr1.fa \
-    -o new_path/to/output_prefix \
+$ scAllele 
+    -b testdata/gm12878.chr21.bam 
+    -g testdata/hg38.chr21.fa 
+    -o new_path/to/output_prefix 
     --glm_clf_name path/to/new_clf.feature_matrix.tab  
 ```
 
@@ -225,16 +241,20 @@ _____________________________________
 ## **Output**
 
 scAllele generates 4 files as output:
-```
-path/to/output_prefix.vcf
-path/to/output_prefix.mi_summary.tab
-path/to/output_prefix.read_cluster_info.tab
-path/to/output_prefix.intronic_parts.bed
-```
-The first file `.vcf` is a standard vcf file reporting all the nucleotide variants found. The description of the tags and values are specified in the header.\
-The second file `.mi_summary.tab` reports all the linkage events between variants or between variant and intronic part (ASAS). The mututal information and number of common reads between pairs of variants are reported. **NOTE**: All the testable linkages are presented. It is recommended to filter linkage events based on the mutual information and number of common reads as explained in the main publication.\
-The third file `.read_cluster_info.tab` reports all the read clusters identified in the file. \
-The fourth file `.intronic_parts.bed` reports the intronic parts identified together with the introns that form them. 
+
+* path/to/output_prefix.vcf
+* path/to/output_prefix.mi_summary.tab
+* path/to/output_prefix.read_cluster_info.tab
+* path/to/output_prefix.intronic_parts.bed
+
+
+The first file (**.vcf**) is a standard vcf file reporting all the nucleotide variants found. The description of the tags and values are specified in the header.
+
+The second file (**.mi_summary.tab**) reports all the linkage events between variants or between variant and intronic part (ASAS). The mutual information and number of common reads between pairs of variants are reported. **NOTE**: All the testable linkages are presented. It is recommended to filter linkage events based on the mutual information and number of common reads as explained in the main publication.
+
+The third file (**.read_cluster_info.tab**) reports all the read clusters identified in the file. 
+
+The fourth file (**.intronic_parts.bed**) reports the intronic parts identified together with the introns that form them. 
 
 ## **Debug**
 
