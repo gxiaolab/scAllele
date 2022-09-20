@@ -38,11 +38,18 @@ _______________________________________
 
 ## **Download**
 
-scAllele is available through test.PyPi. To download simply type:
+scAllele is available through PyPi. To download simply type:
 
 ```
-$ pip install -i https://test.pypi.org/simple/ scAllele
+$ pip install scAllele
 ```
+
+Alternatively:
+
+```
+$ git get 
+$ pip install .
+``` 
 
 The download was tested with PyPi version >= 20.0.1
 
@@ -261,7 +268,7 @@ The fourth file (**.intronic_parts.bed**) reports the intronic parts identified 
 If the installed version of scAllele is not the latest one, please try:
 
 ```
-pip install -i https://test.pypi.org/simple/ scAllele==0.0.9.1
+pip install scAllele==0.0.9.2
 ```
 
 If one or more dependencies fail to install, make sure you have the latest version of pip:
@@ -274,5 +281,5 @@ If the error persists, download the `requires.txt` file from this repository and
 
 ```
 pip install -r requires.txt
-pip install -i https://test.pypi.org/simple/ scAllele==0.0.9.1
+pip install -i https://test.pypi.org/simple/ scAllele==0.0.9.2
 ``` 
