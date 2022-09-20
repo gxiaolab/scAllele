@@ -44,13 +44,6 @@ scAllele is available through PyPi. To download simply type:
 $ pip install scAllele
 ```
 
-Alternatively:
-
-```
-$ git get 
-$ pip install .
-``` 
-
 The download was tested with PyPi version >= 20.0.1
 
 If succesful, the program is ready to use. The installation incorporates console script entrypoints to directly call scAllele:
