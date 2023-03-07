@@ -1,6 +1,6 @@
 # **scAllele**
 _______________________________________
-[![](https://img.shields.io/badge/scAllele-v0.0.9.2-blue)](https://test.pypi.org/project/scAllele/)
+[![](https://img.shields.io/badge/scAllele-v0.0.9.3-blue)](https://test.pypi.org/project/scAllele/)
 
 [Github](https://github.com/gxiaolab/scAllele/)
 
@@ -15,7 +15,7 @@ isoforms.
 
 ## **Table of contents**
 - [Outline](#Outline)
-- [Download](#Download)
+- [Installation](#Installation)
 - [Usage](#Usage)
 	- [Basic usage](#Basic-usage)
 	- [Preprocessing](#Preprocessing)
@@ -36,19 +36,43 @@ _______________________________________
 
 _______________________________________
 
-## **Download**
+## **Installation**
 
-scAllele is available through PyPi. To download simply type:
+scAllele is available through **PyPi**. To download simply type:
 
 ```
-$ pip install scAllele
+pip install scAllele
 ```
 
-The download was tested with PyPi version >= 20.0.1
+The download was tested with PyPi version >= 20.0.1.
+
+Alternatively, you can clone this **GitHub** repository:
+
+```
+git clone git@github.com:gxiaolab/scAllele.git 
+pip install .
+```
+
+Or
+
+```
+git clone https://github.com/gxiaolab/scAllele.git
+pip install .
+```
+
+You can also download the **Singularity** container:
+
+```
+singularity pull library://giovas/collection/s5
+# run
+singularity exec s5_latest.sif scAllele
+```
 
 If succesful, the program is ready to use. The installation incorporates console script entrypoints to directly call scAllele:
+
 ```
-$ scAllele
+scAllele
+
 Usage: 
 	scAllele -b <file.bam> -g <genome.fa> -o <output prefix>
 A variant caller and variant analysis tool for scRNA-seq data.
@@ -120,13 +144,13 @@ The minimum requirements to run scAllele are:
 3. A prefix for the output files.
 
 ```
-$ scAllele -b file.sorted.bam -g genome.fa -o path/to/output_prefix
+scAllele -b file.sorted.bam -g genome.fa -o path/to/output_prefix
 ```
 
 Using the provided test data: 
 
 ```
-$ scAllele 
+scAllele 
     -b testdata/gm12878.chr21.bam 
     -g testdata/hg38.chr21.fa 
     -o path/to/output_prefix 
@@ -146,7 +170,7 @@ If your scRNA-seq is strand-specific, then you can specify the strandedness of y
 Strand-specific data helps resolve ambiguous alignments on overlapping genes. It also helps detect more accurate ASAS events. \
 Most strand-specific libraries in RNA-Seq are `fr-firststrand` (second read pair is sense to the RNA). You can specify this in your command:
 ```
-$ scAllele 
+scAllele 
     -b testdata/gm12878.chr21.bam 
     -g testdata/hg38.chr21.fa 
     -o path/to/output_prefix 
@@ -158,13 +182,13 @@ Alternatively, you can use the option `--strandedness=fr-secondstrand` if the fi
 By default, scAllele searches for variants in all the regions of the transcriptome covered by reads. If you wish to search for variants in a custom genomic interval, you can do so with the `-c` option. 
 ```
 ## Only search chromosome 21
-$ scAllele 
+scAllele 
     -b testdata/gm12878.chr21.bam 
     -g testdata/hg38.chr21.fa 
     -o path/to/output_prefix 
     -c chr21
 ## Only search within these coordinates
-$ scAllele 
+scAllele 
     -b testdata/gm12878.chr21.bam 
     -g testdata/hg38.chr21.fa 
     -o path/to/output_prefix 
@@ -179,7 +203,7 @@ scAllele will search for read clusters within these regions only. Bare in mind t
 Although it is recommended to filter variants downstream of your analysis (via bcftools or others), it's possible to filter variants from the start. If you wish, for example, to only report variants with 3 reads supporting the alternative allele (AC) and 5 reads overall, then you can run the following command:
 
 ```
-$ scAllele 
+scAllele 
     -b testdata/gm12878.chr21.bam 
     -g testdata/hg38.chr21.fa 
     -o path/to/output_prefix 
@@ -194,7 +218,7 @@ The default is `AC=2 and DP=2`.
 scAllele offers the option to retrain the variant classifier. Sequencing data from different platforms or resulting from different library preparation protocols may have different error profiles. If you wish to retrain scAllele's classifier run it in training mode: 
 
 ```
-$ scAllele 
+scAllele 
     -b testdata/gm12878.chr21.bam 
     -g testdata/hg38.chr21.fa 
     -o path/to/new_clf 
@@ -205,7 +229,7 @@ This will return a feature file (`.feature_matrix.tab`) containing the variant c
 Then, run scAllele's training function. The supervised classifier will require a set of ground-truth variants to fit the model.  
 
 ```
-$ scAllele_train 
+scAllele_train 
     -i path/to/new_clf.feature_matrix.tab 
     -v truth.vcf 
     -g testdata/hg38.chr21.fa
@@ -220,7 +244,7 @@ This will return 3 pickle objects:
 Finally, to use these new classifiers to call variants run:
 
 ```
-$ scAllele 
+scAllele 
     -b testdata/gm12878.chr21.bam 
     -g testdata/hg38.chr21.fa 
     -o new_path/to/output_prefix 
@@ -228,6 +252,7 @@ $ scAllele
 ```
 
 _____________________________________
+
 
 
 ## **Output**
@@ -253,7 +278,7 @@ The fourth file (**.intronic_parts.bed**) reports the intronic parts identified 
 If the installed version of scAllele is not the latest one, please try:
 
 ```
-pip install scAllele==0.0.9.2
+pip install scAllele==0.0.9.3
 ```
 
 If one or more dependencies fail to install, make sure you have the latest version of pip:
@@ -262,9 +287,4 @@ If one or more dependencies fail to install, make sure you have the latest versi
 pip install --upgrade pip
 ```
 
-If the error persists, download the `requires.txt` file from this repository and install the dependencies prior to scAllele installation:
 
-```
-pip install -r requires.txt
-pip install -i https://test.pypi.org/simple/ scAllele==0.0.9.2
-``` 
