@@ -1,5 +1,6 @@
 # **scAllele**
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 ## **About**
@@ -11,6 +12,8 @@ scAllele makes use local reassembly via de-Bruijn graph to identify sequence dif
 The read level variant-call allows for the analysis of the role variants in the context of splicing. 
 Using mutual information, scAllele identifis allelic linkage between nucleotide variants and splicing
 =======
+=======
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 _______________________________________
 [![](https://img.shields.io/badge/scAllele-v0.0.9.2-blue)](https://test.pypi.org/project/scAllele/)
 
@@ -23,6 +26,9 @@ scAllele is a versatile tool to detect and analyze nucleotide variants in scRNA-
 scAllele makes use local reassembly via de-Bruijn graph to identify sequence differences and infers nucleotide variants at the read level. \
 The read level variant-call allows for the analysis of the role variants in the context of splicing. 
 Using mutual information, scAllele identifies allelic linkage between nucleotide variants and splicing
+<<<<<<< HEAD
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
+=======
 >>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 isoforms.
 
@@ -52,22 +58,32 @@ _______________________________________
 ## **Download**
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 scAllele is available through test.PyPi. To download simply type:
 
 ```
 $ pip install -i https://test.pypi.org/simple/ scAllele
 =======
+=======
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 scAllele is available through PyPi. To download simply type:
 
 ```
 $ pip install scAllele
+<<<<<<< HEAD
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
+=======
 >>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 ```
 
 The download was tested with PyPi version >= 20.0.1
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 If succesful, the program is ready to use. The intallation incorporates console scripts entrypoints to directly call scAllele:
+=======
+If succesful, the program is ready to use. The installation incorporates console script entrypoints to directly call scAllele:
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 =======
 If succesful, the program is ready to use. The installation incorporates console script entrypoints to directly call scAllele:
 >>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
@@ -152,9 +168,12 @@ The minimum requirements to run scAllele are:
 
 ```
 <<<<<<< HEAD
+<<<<<<< HEAD
 $ scAllele -b testdata/gm12878.chr1.bam -g testdata/hg38.chr1.fa -o path/to/output_prefix
 ```
 =======
+=======
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 $ scAllele -b file.sorted.bam -g genome.fa -o path/to/output_prefix
 ```
 
@@ -168,6 +187,9 @@ $ scAllele
 ```
 
 
+<<<<<<< HEAD
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
+=======
 >>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 ### *Preprocessing* 
 
@@ -183,15 +205,21 @@ Strand-specific data helps resolve ambiguous alignments on overlapping genes. It
 Most strand-specific libraries in RNA-Seq are `fr-firststrand` (second read pair is sense to the RNA). You can specify this in your command:
 ```
 <<<<<<< HEAD
+<<<<<<< HEAD
 $ scAllele \
     -b testdata/gm12878.chr1.bam \
     -g testdata/hg38.chr1.fa \
     -o path/to/output_prefix \
 =======
+=======
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 $ scAllele 
     -b testdata/gm12878.chr21.bam 
     -g testdata/hg38.chr21.fa 
     -o path/to/output_prefix 
+<<<<<<< HEAD
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
+=======
 >>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
     --strandedness='fr-firststrand'
 ```
@@ -200,6 +228,7 @@ Alternatively, you can use the option `--strandedness=fr-secondstrand` if the fi
 ### *Local variant call*
 By default, scAllele searches for variants in all the regions of the transcriptome covered by reads. If you wish to search for variants in a custom genomic interval, you can do so with the `-c` option. 
 ```
+<<<<<<< HEAD
 <<<<<<< HEAD
 ## Only search chromosome 1
 $ scAllele \
@@ -215,6 +244,8 @@ $ scAllele \
     -o path/to/output_prefix \
     -c chr1:154582111-154628004
 =======
+=======
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 ## Only search chromosome 21
 $ scAllele 
     -b testdata/gm12878.chr21.bam 
@@ -228,6 +259,9 @@ $ scAllele
     -g testdata/hg38.chr21.fa 
     -o path/to/output_prefix 
     -c chr21:34582111-34628004
+<<<<<<< HEAD
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
+=======
 >>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 ```
 
@@ -235,6 +269,7 @@ scAllele will search for read clusters within these regions only. Bare in mind t
 
 
 ### *Filtering variants* 
+<<<<<<< HEAD
 <<<<<<< HEAD
 Although it is recommended to filter variants downstream of your analysis (via bcftools or others), it's possible to filter variants from the start. If you wish, for example, to only report variants with 3 reads supporting the alternative allele (AC) and 5 reads overall, then you can run the following command:
 ```
@@ -256,6 +291,8 @@ $ scAllele \
     -g testdata/hg38.chr1.fa \
     -o path/to/new_clf \
 =======
+=======
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 
 Although it is recommended to filter variants downstream of your analysis (via bcftools or others), it's possible to filter variants from the start. If you wish, for example, to only report variants with 3 reads supporting the alternative allele (AC) and 5 reads overall, then you can run the following command:
 
@@ -279,6 +316,9 @@ $ scAllele
     -b testdata/gm12878.chr21.bam 
     -g testdata/hg38.chr21.fa 
     -o path/to/new_clf 
+<<<<<<< HEAD
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
+=======
 >>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
     --run_mode='Training' 
 ```
@@ -287,6 +327,7 @@ This will return a feature file (`.feature_matrix.tab`) containing the variant c
 Then, run scAllele's training function. The supervised classifier will require a set of ground-truth variants to fit the model.  
 
 ```
+<<<<<<< HEAD
 <<<<<<< HEAD
 $ scAllele_train \
     -i path/to/new_clf.feature_matrix.tab \
@@ -299,6 +340,8 @@ This will return 3 pickle objects:
 - path/to/new_clf.feature_matrix.tab.INSERTION.glm.pickle
 - path/to/new_clf.feature_matrix.tab.SNP.glm.pickle
 =======
+=======
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 $ scAllele_train 
     -i path/to/new_clf.feature_matrix.tab 
     -v truth.vcf 
@@ -310,21 +353,30 @@ This will return 3 pickle objects:
 * path/to/new_clf.feature_matrix.tab.DELETION.glm.pickle
 * path/to/new_clf.feature_matrix.tab.INSERTION.glm.pickle
 * path/to/new_clf.feature_matrix.tab.SNP.glm.pickle
+<<<<<<< HEAD
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
+=======
 >>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 
 Finally, to use these new classifiers to call variants run:
 
 ```
 <<<<<<< HEAD
+<<<<<<< HEAD
 $ scAllele \
     -b testdata/gm12878.chr1.bam \
     -g testdata/hg38.chr1.fa \
     -o new_path/to/output_prefix \
 =======
+=======
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 $ scAllele 
     -b testdata/gm12878.chr21.bam 
     -g testdata/hg38.chr21.fa 
     -o new_path/to/output_prefix 
+<<<<<<< HEAD
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
+=======
 >>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
     --glm_clf_name path/to/new_clf.feature_matrix.tab  
 ```
@@ -335,6 +387,7 @@ _____________________________________
 ## **Output**
 
 scAllele generates 4 files as output:
+<<<<<<< HEAD
 <<<<<<< HEAD
 ```
 path/to/output_prefix.vcf
@@ -347,6 +400,8 @@ The second file `.mi_summary.tab` reports all the linkage events between variant
 The third file `.read_cluster_info.tab` reports all the read clusters identified in the file. \
 The fourth file `.intronic_parts.bed` reports the intronic parts identified together with the introns that form them. 
 =======
+=======
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 
 * path/to/output_prefix.vcf
 * path/to/output_prefix.mi_summary.tab
@@ -361,6 +416,9 @@ The second file (**.mi_summary.tab**) reports all the linkage events between var
 The third file (**.read_cluster_info.tab**) reports all the read clusters identified in the file. 
 
 The fourth file (**.intronic_parts.bed**) reports the intronic parts identified together with the introns that form them. 
+<<<<<<< HEAD
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
+=======
 >>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 
 ## **Debug**
@@ -369,7 +427,11 @@ If the installed version of scAllele is not the latest one, please try:
 
 ```
 <<<<<<< HEAD
+<<<<<<< HEAD
 pip install -i https://test.pypi.org/simple/ scAllele==0.0.9.1
+=======
+pip install scAllele==0.0.9.2
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 =======
 pip install scAllele==0.0.9.2
 >>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
@@ -386,7 +448,11 @@ If the error persists, download the `requires.txt` file from this repository and
 ```
 pip install -r requires.txt
 <<<<<<< HEAD
+<<<<<<< HEAD
 pip install -i https://test.pypi.org/simple/ scAllele==0.0.9.1
+=======
+pip install -i https://test.pypi.org/simple/ scAllele==0.0.9.2
+>>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
 =======
 pip install -i https://test.pypi.org/simple/ scAllele==0.0.9.2
 >>>>>>> fb6edd555d89cbe87bd349b2a3db563619bb8271
