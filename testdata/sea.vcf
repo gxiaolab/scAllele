@@ -1,0 +1,18 @@
+##fileformat=VCFv4.2
+##fileDate=2022-09-20
+##CL=python /u/project/gxxiao4/giovas/anaconda3/bin/scAllele -b testdata/gm12878.chr21.bam -g testdata/hg38.chr21.fa -o testdata/sea -c chr21:1000-1000000">
+##FILTER=<ID=PASS,Description="Variant passes all filters">
+##FILTER=<ID=LowQual,Description="Variant does not pass one or more filtering criteria">
+##INFO=<ID=varType,Number=1,Type=String,Description="Variant type">
+##INFO=<ID=varGroup,Number=1,Type=String,Description="Variant Group">
+##INFO=<ID=varLength,Number=1,Type=Integer,Description="Variant length">
+##INFO=<ID=varEnd,Number=1,Type=Integer,Description="End position of the variant">
+##INFO=<ID=TandemRep,Number=1,Type=Integer,Description="Count of repeat sequence adjacent to the variant">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Number of reads overlapping the variant position">
+##FORMAT=<ID=AC,Number=R,Type=Integer,Description="Number of reads containing the variant allele">
+##FORMAT=<ID=RC,Number=R,Type=Integer,Description="Number of reads containing the reference allele">
+##FORMAT=<ID=AB,Number=1,Type=Float,Description="Allelic balance of the variant">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Consensus genotype">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype quality">
+##FORMAT=<ID=RCL,Number=1,Type=Integer,Description="Read Cluster id">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	sample

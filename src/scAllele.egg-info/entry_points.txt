@@ -1,0 +1,3 @@
+[console_scripts]
+scAllele = scAllele.scAllele:main
+scAllele_train = scAllele.gqv_glm:main
