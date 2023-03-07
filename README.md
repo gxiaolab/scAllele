@@ -50,6 +50,7 @@ Alternatively, you can clone this **GitHub** repository:
 
 ```
 git clone git@github.com:gxiaolab/scAllele.git 
+python -m build
 pip install .
 ```
 
@@ -57,6 +58,7 @@ Or
 
 ```
 git clone https://github.com/gxiaolab/scAllele.git
+python -m build
 pip install .
 ```
 
