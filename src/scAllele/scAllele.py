@@ -25,6 +25,8 @@ from . import gqv_mutual_information  as MUTINFO
 
 
 
+__version__ = "0.0.9.3"
+
 
 def process_read_cluster_1(ARGs):
 	

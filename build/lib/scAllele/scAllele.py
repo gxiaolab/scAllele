@@ -8,7 +8,7 @@ import copy
 import HTSeq
 import collections
 import multiprocessing 
-import _pickle as pickle
+import pickle as pickle
 import numpy as np
 from optparse import OptionParser, OptionGroup
 
@@ -24,6 +24,8 @@ from . import gqv_software_management as SOFTMAN
 from . import gqv_mutual_information  as MUTINFO
 
 
+
+__version__ = "0.0.9.3"
 
 
 def process_read_cluster_1(ARGs):

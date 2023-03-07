@@ -4,7 +4,7 @@ import numpy as np ; np.seterr(all = "ignore")
 import pandas as pd
 import matplotlib ; matplotlib.use('Agg')
 import random
-import _pickle as pickle
+import pickle
 import pyfaidx
 import matplotlib.pyplot as plt
 
@@ -20,8 +20,7 @@ from sklearn.utils           import resample
 import sys
 import os
 import re
-import vcf
-from vcf.parser import _Info as VcfInfo
+import vcfpy
 
 
 
@@ -165,10 +164,10 @@ def process_dataframe(gqv_training_file, baseline_vcf, ref_genome, overhang = 25
 	
 	df['pb'] = np.log(df['pb'] + 1e-5)
 
-	vcf_file_handle = vcf.Reader(filename = baseline_vcf)
+	vcf_file_handle = vcfpy.Reader(filename = baseline_vcf)
 
-	vcf_file_handle.infos['datasetsmissingcall'] = VcfInfo('datasetsmissingcall', '.', 'String', "bar", 'bar', 'bar')
-	vcf_file_handle.infos['testable']            = VcfInfo('testable', '.', 'String', "bar", 'bar', 'foo')
+	# vcf_file_handle.infos['datasetsmissingcall'] = VcfInfo('datasetsmissingcall', '.', 'String', "bar", 'bar', 'bar')
+	# vcf_file_handle.infos['testable']            = VcfInfo('testable', '.', 'String', "bar", 'bar', 'foo')
 	
 	Y_alt = []
 	var_ids = []
@@ -186,7 +185,7 @@ def process_dataframe(gqv_training_file, baseline_vcf, ref_genome, overhang = 25
 
 			for record in vcf_file_handle.fetch(CHROM, start - overhang, end + overhang):
 				for record_ALT in record.ALT:
-					var_id_base = f"{CHROM}:{record.POS}:{record.REF}>{record_ALT}"
+					var_id_base = f"{CHROM}:{record.POS}:{record.REF}>{record_ALT.value}"
 					label = variant_is_same(var_id, var_id_base, ref_genome)
 					# print("checking", row["REP_COUNT"], row["variant_type"], var_id, var_id_base, label )
 					if label: 
