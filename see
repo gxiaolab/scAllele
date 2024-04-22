@@ -1,1 +1,0 @@
-['AB', 'AC', 'BASEQUAL_ALT_mean', 'DP', 'FILTER', 'FISHER_STRAND', 'INDEL_LEN', 'MI', 'MI_n', 'NVARS', 'OVER_PLOIDY', 'PcrDup', 'RC', 'RCL', 'READPOS_ALT_mean', 'REP_COORDS', 'REP_COUNT', 'STRAND', 'dHAP', 'error', 'n_PLOIDY', 'ndHAP', 'pb', 'variant_id', 'variant_type']
