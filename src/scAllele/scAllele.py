@@ -25,7 +25,7 @@ from . import gqv_mutual_information  as MUTINFO
 
 
 
-__version__ = "0.0.9.3"
+__version__ = "0.0.9.4"
 
 
 def process_read_cluster_1(ARGs):
@@ -362,11 +362,13 @@ def main():
 
 	if options.run_mode in ("Full", "Variant_Caller"):
 		gqv_utils.write_vcf_header(Search_Regions, options.Genome, 
-									options.output_prefix + ".vcf", SAMPLE_list)
-		gqv_utils.write_introns_header(options.output_prefix + ".intronic_parts.bed")
+									f"{options.output_prefix}.vcf", SAMPLE_list)
+		gqv_utils.write_introns_header(f"{options.output_prefix}.intronic_parts.bed")
 
 	if options.run_mode in ("Full"):
-		gqv_utils.write_mutinfo_header(options.output_prefix + ".mi_summary.tab")
+		gqv_utils.write_mutinfo_header(f"{options.output_prefix}.mi_summary.tab")
+
+	os.system(f"rm -f {options.output_prefix}.*")
 
 
 	n = min(options.nodes, multiprocessing.cpu_count())
@@ -434,7 +436,7 @@ def main():
 		
 		if options.run_mode in ("Full", "Variant_Caller"):
 
-			gqv_utils.write_introns_bed(chrom_VAR_LIST, options.output_prefix + ".intronic_parts.bed")
+			gqv_utils.write_introns_bed(chrom_VAR_LIST,  f"{options.output_prefix}.intronic_parts.bed")
 			chrom_VAR_LIST = gqv_utils.merge_SM_VAR_LIST(chrom_VAR_LIST)
 			chrom_VAR_LIST = gqv_vartool.merge_introns(chrom_VAR_LIST, 'merged_SM')
 			gqv_glm.update_vars(GLM_INS, GLM_DEL, GLM_SNP, chrom_VAR_LIST, 'merged_SM', options)
@@ -449,18 +451,17 @@ def main():
 
 
 		if options.run_mode in ("Full", "Variant_Caller"):
-			gqv_utils.write_vcf_file(chrom_VAR_LIST, options.output_prefix + ".vcf", SAMPLE_list)
-			gqv_utils.write_introns_bed(chrom_VAR_LIST, options.output_prefix + ".intronic_parts.bed")
+			gqv_utils.write_vcf_file(chrom_VAR_LIST,    f"{options.output_prefix}.vcf", SAMPLE_list)
+			gqv_utils.write_introns_bed(chrom_VAR_LIST, f"{options.output_prefix}.intronic_parts.bed")
 
 		if options.run_mode in ("Full",):
-			gqv_utils.write_mutinfo_file(chrom_VAR_MUTINFO, options.output_prefix + ".mi_summary.tab")
+			gqv_utils.write_mutinfo_file(chrom_VAR_MUTINFO, f"{options.output_prefix}.mi_summary.tab")
 
-		if options.run_mode == "Training":
-			gqv_utils.write_feat_file(ALL_VARS_LIST, options.output_prefix + ".feature_matrix.tab")
+		if options.run_mode == "Training" and chrom_VAR_LIST:
+			gqv_utils.write_feat_file(chrom_VAR_LIST, f"{options.output_prefix}.feature_matrix.tab")
 
 
-		gqv_utils.write_readcluster_file(ALL_READ_CLUSTERS, 
-									options.output_prefix + ".read_cluster_info.tab")
+		gqv_utils.write_readcluster_file(ALL_READ_CLUSTERS, f"{options.output_prefix}.read_cluster_info.tab")
 
 
 		SOFTMAN.rm_nested_dict(chrom_VAR_LIST)

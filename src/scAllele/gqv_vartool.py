@@ -5,7 +5,7 @@ import numpy as np ; np.seterr(all = "ignore")
 import itertools 
 import HTSeq
 from time import time
-from collections import defaultdict, Hashable
+from collections import defaultdict, abc 
 from Bio import pairwise2
 import functools
 
@@ -25,7 +25,7 @@ _gap_open, _gap_ext = -0.6*_Gap, -0.4*_Gap
 
 _base_pair_score = {}
 
-bases = ["A", "C", "G", "T", "I", "N"]
+bases = ["A", "C", "G", "T", "I", "N", "Y", "X"]
 
 for b1, b2 in itertools.product(bases, bases):
 	if b1 == b2:
@@ -46,7 +46,7 @@ class memoized(object):
 		self.cache = {}
 
 	def __call__(self, *args):
-		if not isinstance(args, Hashable):
+		if not isinstance(args, abc.Hashable):
 			return self.function_name(*args)
 		if args in self.cache:
 			return self.cache[args]
