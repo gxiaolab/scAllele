@@ -6,7 +6,8 @@ import itertools
 import HTSeq
 from time import time
 from collections import defaultdict, abc 
-from Bio import pairwise2
+# from Bio import Align.PairwiseAligner
+from Bio import Align
 import functools
 
 sys.setrecursionlimit(100000)
@@ -37,6 +38,11 @@ for b1, b2 in itertools.product(bases, bases):
 	else:
 		_base_pair_score[(b1, b2)] = -1
 
+
+_base_pair_score_mat = np.zeros((len(bases), len(bases))).astype(float)
+for i, b1 in enumerate(bases):
+	for j, b2 in enumerate(bases):
+		_base_pair_score_mat[i, j] = _base_pair_score[(b1, b2)]
 
 
 
@@ -334,11 +340,17 @@ def edit_distance_function_msnp(var):
 
 
 def edit_distance_function_biopython(var, Junctions, REFPOS):
-	aligner = pairwise2.align.globalds
+	aligner = Align.PairwiseAligner() 
+	aligner.mode = "global"
+	aligner.extend_gap_score = _gap_ext
+	aligner.open_gap_score   = _gap_open
+	aligner.substitution_matrix = _base_pair_score_mat
 
-	alignments = aligner(var.ALT, var.REF, _base_pair_score, _gap_open, _gap_ext)
+	alignments = aligner.align(var.ALT, var.REF) 
 
-	ALT_aln, REF_aln, Edit_Distance, Start, End = alignments[0]
+	# ALT_aln, REF_aln, Edit_Distance, Start, End = alignments[0]
+	ALT_aln, REF_aln = alignments[0]
+
 
 	total_editd = 0
 	coord_list = []

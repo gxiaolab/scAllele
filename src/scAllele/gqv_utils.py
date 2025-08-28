@@ -800,7 +800,7 @@ def feature_collection_ref(SetOfVariants, SetOfReadNames, options, SM, REFPOS):
         sttuter_error = rough_stutter_noise(variant.length(), variant.rep_count) 
         error = sttuter_error + options.maxSeqErrorRate
 
-        pb = stats.binomtest(AC, DP, error)
+        pb = stats.binomtest(int(AC), int(DP), error).pvalue
 
 
         anchor_pos    = (REFPOS.gi.chrom, variant.g_start + 1, variant_group)
@@ -949,7 +949,7 @@ def feature_collection(SetOfVariants, SetOfReadNames, options, SM, REFPOS):
         sttuter_error = rough_stutter_noise(variant.length(), variant.rep_count) 
         error = sttuter_error + options.maxSeqErrorRate
 
-        pb = stats.binomtest(AC, DP, error)
+        pb = stats.binomtest(int(AC), int(DP), error).pvalue
 
 
         anchor_pos    = (REFPOS.gi.chrom, variant.g_start + 1, variant_group)
@@ -1214,7 +1214,7 @@ def merge_SM_VAR_LIST( VAR_LIST):
 
             merged_VAR_LIST[POS][ALLELE]['merged_SM']["FEAT"]['OVER_PLOIDY'] = any(over_ploidy)
 
-            pb = stats.binomtest(AC, DP, merged_VAR_LIST[POS][ALLELE]['error'])
+            pb = stats.binomtest(int(AC), int(DP), merged_VAR_LIST[POS][ALLELE]['error']).pvalue
 
             merged_VAR_LIST[POS][ALLELE]['merged_SM']["FEAT"]['pb'] = pb
         

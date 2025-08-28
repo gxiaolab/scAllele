@@ -1,18 +1,51 @@
-##fileformat=VCFv4.2
-##fileDate=2022-09-20
-##CL=python /u/project/gxxiao4/giovas/anaconda3/bin/scAllele -b testdata/gm12878.chr21.bam -g testdata/hg38.chr21.fa -o testdata/sea -c chr21:1000-1000000">
-##FILTER=<ID=PASS,Description="Variant passes all filters">
-##FILTER=<ID=LowQual,Description="Variant does not pass one or more filtering criteria">
-##INFO=<ID=varType,Number=1,Type=String,Description="Variant type">
-##INFO=<ID=varGroup,Number=1,Type=String,Description="Variant Group">
-##INFO=<ID=varLength,Number=1,Type=Integer,Description="Variant length">
-##INFO=<ID=varEnd,Number=1,Type=Integer,Description="End position of the variant">
-##INFO=<ID=TandemRep,Number=1,Type=Integer,Description="Count of repeat sequence adjacent to the variant">
-##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Number of reads overlapping the variant position">
-##FORMAT=<ID=AC,Number=R,Type=Integer,Description="Number of reads containing the variant allele">
-##FORMAT=<ID=RC,Number=R,Type=Integer,Description="Number of reads containing the reference allele">
-##FORMAT=<ID=AB,Number=1,Type=Float,Description="Allelic balance of the variant">
-##FORMAT=<ID=GT,Number=1,Type=String,Description="Consensus genotype">
-##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype quality">
-##FORMAT=<ID=RCL,Number=1,Type=Integer,Description="Read Cluster id">
-#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	sample
+chr21	25563648	.	T	A	0.8	LowQual	varEnd=25563648;varGroup=SNV;varType=SNV;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:1:5:0.17:5
+chr21	25574217	.	G	A	0.96	LowQual	varEnd=25574217;varGroup=SNV;varType=SNV;varLength=0;TandemRep=3	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:1:4:0.20:7
+chr21	25574220	.	A	G	1.01	LowQual	varEnd=25574220;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:1:4:0.20:7
+chr21	25574228	.	T	G	0.5	LowQual	varEnd=25574228;varGroup=SNV;varType=SNV;varLength=0;TandemRep=3	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:0:6:0.00:7
+chr21	25574703	.	CA	C	0.58	LowQual	varEnd=25574704;varGroup=INDEL;varType=DELETION;varLength=-1;TandemRep=6	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:1:5:0.17:11
+chr21	25574742	.	T	C	0.91	LowQual	varEnd=25574742;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:8:1:7:0.13:11
+chr21	25574826	.	T	TAAA	10.52	LowQual	varEnd=25574826;varGroup=INDEL;varType=INSERTION;varLength=3;TandemRep=0	GT:GQ:DP:AC:RC:AB:RCL	./.:0:2:2:0:1.00:12
+chr21	25592893	.	T	C	10.17	PASS	varEnd=25592893;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=1	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:5:0:1.00:17
+chr21	25606592	.	T	C	1.0	LowQual	varEnd=25606592;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:1:5:0.17:25
+chr21	25606638	.	A	G	10.92	PASS	varEnd=25606638;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=0	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:5:0:1.00:25
+chr21	25725291	.	A	G	0.72	LowQual	varEnd=25725291;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=5	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:1:4:0.20:27
+chr21	25725302	.	C	T	0.81	LowQual	varEnd=25725302;varGroup=SNV;varType=SNV;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:1:5:0.17:27
+chr21	25729650	.	C	G	0.41	LowQual	varEnd=25729650;varGroup=SNV;varType=SNV;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:10:1:9:0.10:28
+chr21	25772226	.	A	G	0.69	LowQual	varEnd=25772226;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=5	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:1:5:0.17:31
+chr21	25772232	.	A	G	0.76	LowQual	varEnd=25772232;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=4	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:1:5:0.17:31
+chr21	29060626	.	G	A	0.38	LowQual	varEnd=29060626;varGroup=SNV;varType=SNV;varLength=0;TandemRep=1	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:0:5:0.00:42
+chr21	29060650	.	G	T	0.81	LowQual	varEnd=29060650;varGroup=SNV;varType=SNV;varLength=0;TandemRep=3	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:1:5:0.17:42
+chr21	29061273	.	T	A	0.98	LowQual	varEnd=29061273;varGroup=SNV;varType=SNV;varLength=0;TandemRep=1	GT:GQ:DP:AC:RC:AB:RCL	./.:0:4:1:3:0.25:43
+chr21	29061535	.	T	C	0.83	LowQual	varEnd=29061535;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=1	GT:GQ:DP:AC:RC:AB:RCL	./.:0:9:1:8:0.11:46
+chr21	29061548	.	C	T	0.68	LowQual	varEnd=29061548;varGroup=SNV;varType=SNV;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:9:1:8:0.11:46
+chr21	29062549	.	A	G	0.76	LowQual	varEnd=29062549;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=1	GT:GQ:DP:AC:RC:AB:RCL	./.:0:8:1:7:0.13:49
+chr21	29066738	.	T	C	0.88	LowQual	varEnd=29066738;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:1:5:0.17:55
+chr21	29066764	.	A	T	0.82	LowQual	varEnd=29066764;varGroup=SNV;varType=SNV;varLength=0;TandemRep=1	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:1:4:0.20:55
+chr21	29069445	.	G	C	0.67	LowQual	varEnd=29069445;varGroup=SNV;varType=SNV;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:1:5:0.17:58
+chr21	32601835	.	CT	C	1.14	LowQual	varEnd=32601836;varGroup=INDEL;varType=DELETION;varLength=-1;TandemRep=3	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:1:4:0.20:6
+chr21	32601868	.	T	C	0.8	LowQual	varEnd=32601868;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:1:4:0.20:6
+chr21	32758548	.	A	G	0.62	LowQual	varEnd=32758548;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=6	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:1:5:0.17:12
+chr21	33576934	.	A	C	0.26	LowQual	varEnd=33576934;varGroup=SNV;varType=SNV;varLength=0;TandemRep=1	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:1:5:0.17:0
+chr21	33903556	.	CT	C	1.12	LowQual	varEnd=33903557;varGroup=INDEL;varType=DELETION;varLength=-1;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:10:1:9:0.10:4
+chr21	33903560	.	T	TG	0.0	LowQual	varEnd=33903560;varGroup=INDEL;varType=INSERTION;varLength=1;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:9:0:9:0.00:4
+chr21	33903560	.	T	C	0.68	LowQual	varEnd=33903560;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=1	GT:GQ:DP:AC:RC:AB:RCL	./.:0:10:1:9:0.10:4
+chr21	33903561	.	G	T	0.22	LowQual	varEnd=33903561;varGroup=SNV;varType=SNV;varLength=0;TandemRep=1	GT:GQ:DP:AC:RC:AB:RCL	./.:0:10:1:9:0.10:4
+chr21	33903563	.	A	C	0.05	LowQual	varEnd=33903563;varGroup=SNV;varType=SNV;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:10:1:9:0.10:4
+chr21	33909091	.	T	C	1.12	LowQual	varEnd=33909091;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:4:1:3:0.25:10
+chr21	34142943	.	G	A	0.87	LowQual	varEnd=34142943;varGroup=SNV;varType=SNV;varLength=0;TandemRep=1	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:1:5:0.17:14
+chr21	37202856	.	A	T	0.22	LowQual	varEnd=37202856;varGroup=SNV;varType=SNV;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:1:4:0.20:10
+chr21	39342559	.	T	A	0.3	LowQual	varEnd=39342559;varGroup=SNV;varType=SNV;varLength=0;TandemRep=1	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:1:4:0.20:16
+chr21	39342576	.	T	G	0.24	LowQual	varEnd=39342576;varGroup=SNV;varType=SNV;varLength=0;TandemRep=3	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:1:4:0.20:16
+chr21	39345230	.	T	C	0.9	LowQual	varEnd=39345230;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=1	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:1:4:0.20:17
+chr21	39390813	.	C	T	0.56	LowQual	varEnd=39390813;varGroup=SNV;varType=SNV;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:1:4:0.20:21
+chr21	39397364	.	A	G	10.15	PASS	varEnd=39397364;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:5:0:1.00:24
+chr21	39397413	.	A	G	0.78	LowQual	varEnd=39397413;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=4	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:1:4:0.20:24
+chr21	42911607	.	A	G	2.89	LowQual	varEnd=42911607;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:2:4:0.33:0
+chr21	42911608	.	A	G	2.74	LowQual	varEnd=42911608;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:2:4:0.33:0
+chr21	42911614	.	C	G	6.37	PASS	varEnd=42911614;varGroup=SNV;varType=SNV;varLength=0;TandemRep=5	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:3:3:0.50:0
+chr21	43774069	.	G	A	0.61	LowQual	varEnd=43774069;varGroup=SNV;varType=SNV;varLength=0;TandemRep=1	GT:GQ:DP:AC:RC:AB:RCL	./.:0:10:1:9:0.10:2
+chr21	43774232	.	T	C	0.72	LowQual	varEnd=43774232;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=3	GT:GQ:DP:AC:RC:AB:RCL	./.:0:8:1:7:0.13:4
+chr21	43774669	.	A	G	0.82	LowQual	varEnd=43774669;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:1:5:0.17:6
+chr21	43804004	.	A	G	0.79	LowQual	varEnd=43804004;varGroup=SNV;varType=RNA_EDITING?;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:6:1:5:0.17:7
+chr21	43804034	.	T	A	0.61	LowQual	varEnd=43804034;varGroup=SNV;varType=SNV;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:7:1:6:0.14:7
+chr21	46297549	.	A	C	0.21	LowQual	varEnd=46297549;varGroup=SNV;varType=SNV;varLength=0;TandemRep=2	GT:GQ:DP:AC:RC:AB:RCL	./.:0:5:1:4:0.20:21

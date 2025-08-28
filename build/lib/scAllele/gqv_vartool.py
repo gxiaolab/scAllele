@@ -5,8 +5,9 @@ import numpy as np ; np.seterr(all = "ignore")
 import itertools 
 import HTSeq
 from time import time
-from collections import defaultdict, Hashable
-from Bio import pairwise2
+from collections import defaultdict, abc 
+# from Bio import Align.PairwiseAligner
+from Bio import Align
 import functools
 
 sys.setrecursionlimit(100000)
@@ -25,7 +26,7 @@ _gap_open, _gap_ext = -0.6*_Gap, -0.4*_Gap
 
 _base_pair_score = {}
 
-bases = ["A", "C", "G", "T", "I", "N"]
+bases = ["A", "C", "G", "T", "I", "N", "Y", "X"]
 
 for b1, b2 in itertools.product(bases, bases):
 	if b1 == b2:
@@ -38,6 +39,11 @@ for b1, b2 in itertools.product(bases, bases):
 		_base_pair_score[(b1, b2)] = -1
 
 
+_base_pair_score_mat = np.zeros((len(bases), len(bases))).astype(float)
+for i, b1 in enumerate(bases):
+	for j, b2 in enumerate(bases):
+		_base_pair_score_mat[i, j] = _base_pair_score[(b1, b2)]
+
 
 
 class memoized(object):
@@ -46,7 +52,7 @@ class memoized(object):
 		self.cache = {}
 
 	def __call__(self, *args):
-		if not isinstance(args, Hashable):
+		if not isinstance(args, abc.Hashable):
 			return self.function_name(*args)
 		if args in self.cache:
 			return self.cache[args]
@@ -334,11 +340,17 @@ def edit_distance_function_msnp(var):
 
 
 def edit_distance_function_biopython(var, Junctions, REFPOS):
-	aligner = pairwise2.align.globalds
+	aligner = Align.PairwiseAligner() 
+	aligner.mode = "global"
+	aligner.extend_gap_score = _gap_ext
+	aligner.open_gap_score   = _gap_open
+	aligner.substitution_matrix = _base_pair_score_mat
 
-	alignments = aligner(var.ALT, var.REF, _base_pair_score, _gap_open, _gap_ext)
+	alignments = aligner.align(var.ALT, var.REF) 
 
-	ALT_aln, REF_aln, Edit_Distance, Start, End = alignments[0]
+	# ALT_aln, REF_aln, Edit_Distance, Start, End = alignments[0]
+	ALT_aln, REF_aln = alignments[0]
+
 
 	total_editd = 0
 	coord_list = []

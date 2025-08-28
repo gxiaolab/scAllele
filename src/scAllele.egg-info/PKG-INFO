@@ -1,6 +1,6 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: scAllele
-Version: 0.0.9.4
+Version: 0.0.9.5
 Summary: A versatile tool for the detection and analysis of nucleotide variants in scRNA-seq
 Home-page: https://github.com/gxiaolab/scAllele
 Author: Giovanni Quinones Valdez
@@ -25,12 +25,13 @@ Requires-Dist: pyfaidx>=0.5.9.5
 Requires-Dist: pysam>=0.9.1
 Requires-Dist: vcfpy
 Requires-Dist: scikit-learn>=0.23.1
-Requires-Dist: scipy
+Requires-Dist: scipy>=1.15.1
 Requires-Dist: statsmodels>=0.11.1
+Dynamic: license-file
 
 # **scAllele**
 _______________________________________
-[![](https://img.shields.io/badge/scAllele-v0.0.9.3-blue)](https://test.pypi.org/project/scAllele/)
+[![](https://img.shields.io/badge/scAllele-v0.0.9.5-blue)](https://test.pypi.org/project/scAllele/)
 
 [Github](https://github.com/gxiaolab/scAllele/)
 
@@ -80,6 +81,8 @@ Alternatively, you can clone this **GitHub** repository:
 
 ```
 git clone git@github.com:gxiaolab/scAllele.git 
+cd scAllele
+python -m build
 pip install .
 ```
 
@@ -87,6 +90,8 @@ Or
 
 ```
 git clone https://github.com/gxiaolab/scAllele.git
+cd scAllele
+python -m build
 pip install .
 ```
 

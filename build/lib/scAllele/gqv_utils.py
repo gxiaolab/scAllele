@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+import os
 import sys
 import copy
 import numpy as np ; np.seterr(all = "ignore")
@@ -800,7 +800,7 @@ def feature_collection_ref(SetOfVariants, SetOfReadNames, options, SM, REFPOS):
         sttuter_error = rough_stutter_noise(variant.length(), variant.rep_count) 
         error = sttuter_error + options.maxSeqErrorRate
 
-        pb = stats.binom_test(AC, DP, error)
+        pb = stats.binomtest(int(AC), int(DP), error).pvalue
 
 
         anchor_pos    = (REFPOS.gi.chrom, variant.g_start + 1, variant_group)
@@ -949,7 +949,7 @@ def feature_collection(SetOfVariants, SetOfReadNames, options, SM, REFPOS):
         sttuter_error = rough_stutter_noise(variant.length(), variant.rep_count) 
         error = sttuter_error + options.maxSeqErrorRate
 
-        pb = stats.binom_test(AC, DP, error)
+        pb = stats.binomtest(int(AC), int(DP), error).pvalue
 
 
         anchor_pos    = (REFPOS.gi.chrom, variant.g_start + 1, variant_group)
@@ -1214,7 +1214,7 @@ def merge_SM_VAR_LIST( VAR_LIST):
 
             merged_VAR_LIST[POS][ALLELE]['merged_SM']["FEAT"]['OVER_PLOIDY'] = any(over_ploidy)
 
-            pb = stats.binom_test(AC, DP, merged_VAR_LIST[POS][ALLELE]['error'])
+            pb = stats.binomtest(int(AC), int(DP), merged_VAR_LIST[POS][ALLELE]['error']).pvalue
 
             merged_VAR_LIST[POS][ALLELE]['merged_SM']["FEAT"]['pb'] = pb
         
@@ -1228,48 +1228,59 @@ def read_genome_fasta(gf):
 
 
 def write_feat_file(var_list, FeatFile):
-    Feat_Handle = open(FeatFile, 'w')
-    Title = False
-    feat_list = []
+    if os.path.exists(FeatFile):
+        Feat_Handle = open(FeatFile, 'a')
+        Title = True
+    else:
+        Feat_Handle = open(FeatFile, 'w')
+        Title = False
+
+    feat_list = []          
 
     for genomic_pos in sorted(var_list):
         for ALT, line in var_list[genomic_pos].items():
 
             flat_dict = {} 
 
-            for f, v in line.items():
+            for feat, v in line.items():
                 if not isinstance(v, dict):
-                    flat_dict[f] = v
+                    flat_dict[feat] = v
 
-            if abs(line['INDEL_LEN']) > 20:
-                continue
-
-            for f, v in line.items():
+            for sm, v in line.items():
                 if isinstance(v, dict):
                                         
-                    for feat, value in line[f]['FEAT'].items():
+                    for feat, value in line[sm]['FEAT'].items():
                         flat_dict[feat] = value
 
-                    if not Title:
-                        feat_list  = list(flat_dict.keys())
-                        title_line = [str(_feat) for _feat in feat_list]
+                    feat_list  = sorted(list(flat_dict.keys()))
+
+                    if not Title: # title is missing
+                        title_line = [str(_feat) for _feat in feat_list] ; print(title_line)
                         Feat_Handle.write('\t'.join(["SM"] + title_line) + '\n')
                         Title = True
 
-                    outline = [f] + [str(flat_dict[_feat]) for _feat in feat_list]
+                    if abs(flat_dict['INDEL_LEN']) > 20:
+                        continue
+
+                    outline = [sm] + [str(flat_dict[_feat]) for _feat in feat_list] 
                     Feat_Handle.write('\t'.join(outline) + '\n')
 
     Feat_Handle.close()
 
 
 def write_readcluster_file(ALL_READ_CLUSTERS, outfile):
-    with open(outfile, 'w') as f:
-        f.write("bam_file\tindex\tchrom\tstart\tend\tstrand\tmax_coverage\n")
-        for (sm, bam), rc_list in ALL_READ_CLUSTERS.items():
-            for rc in rc_list:
-                outline = [sm] + list(rc)
-                f.write("\t".join(map(str, outline)) + "\n")
+    if os.path.exists(outfile):
+        f = open(outfile, 'a')
+    else:
+        f = open(outfile, 'w')
+        f.write("bam_file\tindex\tchrom\tstrand\tstart\tend\tmax_coverage\n")
 
+    for (sm, bam), rc_list in ALL_READ_CLUSTERS.items():
+        for rc in rc_list:
+            outline = [sm] + list(rc)
+            f.write("\t".join(map(str, outline)) + "\n")
+
+    f.close()
 
 
 def write_vcf_header(search_regions, genome_fasta, VcfFile, SM_names):
