@@ -291,7 +291,7 @@ def find_read_clusters(bam_file, options, chrom, start, end):
 
 	
 adapter1, adapter2 = "XX", "YY"
-
+special_bases = set(['R', 'Y', 'S', 'W', 'K', 'M', 'B', 'D', 'H', 'V', 'N'])
 
 class genome_ref_pos():
 	
@@ -302,14 +302,20 @@ class genome_ref_pos():
 
 		RC_ext_seq_compressed = adapter1
 		for (s, e) in Covered_Ranges:
+			
 			block_seq = str(genome.fetch(CHROM, s + 1, e)).upper()
+			for b in special_bases:
+				block_seq = block_seq.replace(b, 'N')
+
 			RC_ext_seq_compressed += block_seq  + "I"
 		RC_ext_seq_compressed = RC_ext_seq_compressed.rstrip("I")	
 		RC_ext_seq_compressed += adapter2
 
-		RC_ext_seq_full  = adapter1 
-		RC_ext_seq_full += str(genome.fetch(CHROM, RC_ext_Start + 1, RC_ext_End)).upper()
-		RC_ext_seq_full += adapter2
+		RC_ext_seq_full = str(genome.fetch(CHROM, RC_ext_Start + 1, RC_ext_End)).upper()
+		for b in special_bases:
+				RC_ext_seq_full = RC_ext_seq_full.replace(b, 'N')
+		RC_ext_seq_full = adapter1 + RC_ext_seq_full + adapter2
+
 
 		self.Seq_ext      = RC_ext_seq_compressed
 		self.Seq_ext_full = RC_ext_seq_full 
