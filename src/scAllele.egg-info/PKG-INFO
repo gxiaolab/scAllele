@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: scAllele
-Version: 0.0.9.6
+Version: 0.0.9.7
 Summary: A versatile tool for the detection and analysis of nucleotide variants in scRNA-seq
 Home-page: https://github.com/gxiaolab/scAllele
 Author: Giovanni Quinones Valdez
@@ -12,7 +12,7 @@ Classifier: Operating System :: OS Independent
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: biopython
+Requires-Dist: biopython>=1.8.5
 Requires-Dist: glob2
 Requires-Dist: HTSeq
 Requires-Dist: multiprocess
@@ -31,7 +31,7 @@ Dynamic: license-file
 
 # **scAllele**
 _______________________________________
-[![](https://img.shields.io/badge/scAllele-v0.0.9.6-blue)](https://test.pypi.org/project/scAllele/)
+[![](https://img.shields.io/badge/scAllele-v0.0.9.7-blue)](https://test.pypi.org/project/scAllele/)
 
 [Github](https://github.com/gxiaolab/scAllele/)
 

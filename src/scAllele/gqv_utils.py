@@ -330,7 +330,6 @@ def _find_best_read_path(Read_Index, REF_INDEX, paths, REFPOS, k, SetOfReadIndex
                 VAR = gqv_vartool.convert_to_var(Ref_Seq, Rid_Seq, Ref_Var.start, Ref_Var.end, 
                                                  0, REnd - RPos, Read_Index, REFPOS)
 
-               
                 if str(VAR) in memoization_alignments:
                     VAROBJ_ED = memoization_alignments[str(VAR)]
                 else:
@@ -339,11 +338,11 @@ def _find_best_read_path(Read_Index, REF_INDEX, paths, REFPOS, k, SetOfReadIndex
 
                 VAROBJ_ED_copy = copy.deepcopy(VAROBJ_ED)
                 for _var in VAROBJ_ED_copy[2]:
-                    _var.shift_Rpos(RPos)
+                    _var.shift_Rpos(RPos) 
 
                 path_editd_1 += VAROBJ_ED_copy[0]
                 path_editd_2 += VAROBJ_ED_copy[1]
-                path_vars    += VAROBJ_ED_copy[2]
+                path_vars    += VAROBJ_ED_copy[2] 
                 path_n_vars  += VAROBJ_ED_copy[3]
 
         path_values[i] = [path_editd_1, path_editd_2, path_vars, path_n_vars]
@@ -1214,7 +1213,10 @@ def merge_SM_VAR_LIST( VAR_LIST):
 
             merged_VAR_LIST[POS][ALLELE]['merged_SM']["FEAT"]['OVER_PLOIDY'] = any(over_ploidy)
 
-            pb = stats.binomtest(int(AC), int(DP), merged_VAR_LIST[POS][ALLELE]['error']).pvalue
+            if DP == 0:
+                pb = 1.0
+            else:
+                pb = stats.binomtest(int(AC), int(DP), merged_VAR_LIST[POS][ALLELE]['error']).pvalue
 
             merged_VAR_LIST[POS][ALLELE]['merged_SM']["FEAT"]['pb'] = pb
         

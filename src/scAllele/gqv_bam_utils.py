@@ -291,7 +291,7 @@ def find_read_clusters(bam_file, options, chrom, start, end):
 
 	
 adapter1, adapter2 = "XX", "YY"
-special_bases = set(['R', 'Y', 'S', 'W', 'K', 'M', 'B', 'D', 'H', 'V', 'N'])
+special_bases = set(['R', 'Y', 'S', 'W', 'K', 'M', 'B', 'D', 'H', 'V'])
 
 class genome_ref_pos():
 	

@@ -8,6 +8,8 @@ from time import time
 from collections import defaultdict, abc 
 # from Bio import Align.PairwiseAligner
 from Bio import Align
+from Bio.Align.substitution_matrices import Array
+
 import functools
 
 sys.setrecursionlimit(100000)
@@ -24,26 +26,26 @@ _min_complex_length = 4
 
 _gap_open, _gap_ext = -0.6*_Gap, -0.4*_Gap  
 
-_base_pair_score = {}
-
 bases = ["A", "C", "G", "T", "I", "N", "Y", "X"]
+
+_base_pair_score = Array(''.join(bases), dims = 2)
 
 for b1, b2 in itertools.product(bases, bases):
 	if b1 == b2:
-		_base_pair_score[(b1, b2)] = 0.0
+		_base_pair_score[b1, b2] = 0.0
 	elif b1 == "I" or b2 == "I":
-		_base_pair_score[(b1, b2)] = -1*_Intron_Gap
+		_base_pair_score[b1, b2] = -1*_Intron_Gap
 	elif b1 == "N" or b2 == "N":
-		_base_pair_score[(b1, b2)] = -1
+		_base_pair_score[b1, b2] = -1
 	else:
-		_base_pair_score[(b1, b2)] = -1
+		_base_pair_score[b1, b2] = -1
 
 
-_base_pair_score_mat = np.zeros((len(bases), len(bases))).astype(float)
-for i, b1 in enumerate(bases):
-	for j, b2 in enumerate(bases):
-		_base_pair_score_mat[i, j] = _base_pair_score[(b1, b2)]
-
+aligner = Align.PairwiseAligner() 
+aligner.mode = "global"
+aligner.extend_gap_score = _gap_ext
+aligner.open_gap_score   = _gap_open
+aligner.substitution_matrix = _base_pair_score
 
 
 class memoized(object):
@@ -340,16 +342,15 @@ def edit_distance_function_msnp(var):
 
 
 def edit_distance_function_biopython(var, Junctions, REFPOS):
-	aligner = Align.PairwiseAligner() 
-	aligner.mode = "global"
-	aligner.extend_gap_score = _gap_ext
-	aligner.open_gap_score   = _gap_open
-	aligner.substitution_matrix = _base_pair_score_mat
 
 	alignments = aligner.align(var.ALT, var.REF) 
 
 	# ALT_aln, REF_aln, Edit_Distance, Start, End = alignments[0]
-	ALT_aln, REF_aln = alignments[0]
+	ALT_aln, REF_aln = alignments[0] 
+	assert len(ALT_aln) == len(REF_aln)
+	
+	# --TGT-TTGT 
+	# GGTGTG--G-
 
 
 	total_editd = 0
@@ -372,25 +373,31 @@ def edit_distance_function_biopython(var, Junctions, REFPOS):
 	IN_started, DL_started = False, False
 
 	for i, (b_f, b_r) in enumerate(zip(REF_aln, ALT_aln)):
+
 		if b_f == "-" and b_r == "-":
 			raise ValueError("Weird alignment {} {}\n".format(REF_aln, ALT_aln))
+
 		if b_f == "-" and not IN_started:
-			var_start = i
+			var_ins_start = i
 			IN_started = True
 		elif b_f != "-" and IN_started:
-			coord_list.append((var_start, i))
+			coord_list.append((var_ins_start, i))
 			IN_started = False
+
 		if b_r == "-" and not DL_started:
-			var_start = i
+			var_del_start = i
 			DL_started = True
 		elif b_r != "-" and DL_started:
-			coord_list.append((var_start, i))
+			coord_list.append((var_del_start, i))
 			DL_started = False
+
 		if b_r != b_f and b_f != "-" and b_r != "-":
 			coord_list.append((i, i + 1))
 			 
-	if IN_started or DL_started:
-		coord_list.append((var_start, i + 1))
+	if IN_started:
+		coord_list.append((var_ins_start, i + 1))
+	if DL_started:
+		coord_list.append((var_del_start, i + 1))
 
 	final_var_set = []
 	total_n_vars = 0
@@ -406,7 +413,7 @@ def edit_distance_function_biopython(var, Junctions, REFPOS):
 
 		editd, editd_wo_intron, var_set, n_vars = calculate_edit_distance(tmpvar, Junctions, REFPOS)
 		total_editd += editd
-		total_n_vars += n_vars
+		total_n_vars += n_vars 
 		final_var_set.extend(var_set)
 
 	return final_var_set, total_editd

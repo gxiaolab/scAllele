@@ -1,4 +1,4 @@
-biopython
+biopython>=1.8.5
 glob2
 HTSeq
 multiprocess

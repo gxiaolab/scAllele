@@ -1,6 +1,6 @@
 # **scAllele**
 _______________________________________
-[![](https://img.shields.io/badge/scAllele-v0.0.9.6-blue)](https://test.pypi.org/project/scAllele/)
+[![](https://img.shields.io/badge/scAllele-v0.0.9.7-blue)](https://test.pypi.org/project/scAllele/)
 
 [Github](https://github.com/gxiaolab/scAllele/)
 
